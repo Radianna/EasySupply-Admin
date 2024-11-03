@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Controllers\PesananController;
-use App\Http\Controllers\ProdukController;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Api\PesananController;
+use App\Http\Controllers\Api\ProdukController;
+use App\Http\Controllers\Api\RoleController;
+use App\Http\Controllers\Api\UserController;
 use App\Models\Produk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
