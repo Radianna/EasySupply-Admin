@@ -3,18 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Role;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $user = User::all();
-        return view('admin.manage-user.index', compact('user'));
+        $role = Role::all();
+        return view('admin.manage-role.index', compact('role'));
     }
 
     /**
@@ -22,14 +22,14 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('admin.manage-user.create');
+        return view('admin.manage-role.create');
     }
 
-public function getUserData(Request $request)
+public function getRoleData(Request $request)
 {
     try {
         $search = $request->input('search');
-        $query = User::query();
+        $query = Role::query();
 
         if ($search) {
             $query->where('name', 'LIKE', "%{$search}%")
@@ -37,8 +37,8 @@ public function getUserData(Request $request)
                   ->orWhere('alamat', 'LIKE', "%{$search}%");
         }
 
-        $users = $query->select('id', 'name', 'email', 'alamat')->get();
-        return response()->json($users); // Pastikan ini mengembalikan JSON lengkap
+        $roles = $query->select('id', 'name', 'email', 'alamat')->get();
+        return response()->json($roles); // Pastikan ini mengembalikan JSON lengkap
     } catch (\Exception $e) {
         return response()->json(['error' => 'Gagal memuat data: ' . $e->getMessage()], 500);
     }

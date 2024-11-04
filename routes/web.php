@@ -2,15 +2,16 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admmin\RoleController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return redirect('/dashboard');
+    return redirect('admin/dashboard');
 });
 
-Route::get('/dashboard', function () {
+Route::get('admin/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified'])->name('admin.dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

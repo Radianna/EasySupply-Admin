@@ -3,18 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Produk;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class ProdukController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $user = User::all();
-        return view('admin.manage-user.index', compact('user'));
+        $produk = Produk::all();
+        return view('admin.manage-produk.index', compact('produk'));
     }
 
     /**
@@ -22,14 +22,14 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('admin.manage-user.create');
+        //
     }
 
-public function getUserData(Request $request)
+public function getProdukData(Request $request)
 {
     try {
         $search = $request->input('search');
-        $query = User::query();
+        $query = Produk::query();
 
         if ($search) {
             $query->where('name', 'LIKE', "%{$search}%")
@@ -37,8 +37,8 @@ public function getUserData(Request $request)
                   ->orWhere('alamat', 'LIKE', "%{$search}%");
         }
 
-        $users = $query->select('id', 'name', 'email', 'alamat')->get();
-        return response()->json($users); // Pastikan ini mengembalikan JSON lengkap
+        $produks = $query->select('id', 'name', 'email', 'alamat')->get();
+        return response()->json($produks); // Pastikan ini mengembalikan JSON lengkap
     } catch (\Exception $e) {
         return response()->json(['error' => 'Gagal memuat data: ' . $e->getMessage()], 500);
     }

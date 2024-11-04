@@ -30,7 +30,7 @@
 
                 <!-- Main -->
                 <li class="nav-item">
-                    <a href="index.html" class="nav-link">
+                    <a href="{{ route('admin.dashboard') }}" class="nav-link">
                         <i class="ph-house"></i>
                         <span>
                             Dashboard

@@ -21,6 +21,7 @@
 	<script src="{{ asset('assets/js/app.js') }}"></script>
     <script src="{{ asset('assets/js/vendor/visualization/d3/d3.min.js')}}"></script>
 	<script src="{{ asset('assets/js/vendor/visualization/d3/d3_tooltip.js')}}"></script>
+    <script src="{{ asset('assets/demo/pages/components_modals.js')}}"></script>
 
 	<!-- /theme JS files -->
 </head>

@@ -3,18 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Pesanan;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class PesananController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $user = User::all();
-        return view('admin.manage-user.index', compact('user'));
+        $pesanan = Pesanan::all();
+        return view('admin.manage-pesanan.index', compact('pesanan'));
     }
 
     /**
@@ -22,27 +22,27 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('admin.manage-user.create');
+        //
     }
 
-public function getUserData(Request $request)
-{
-    try {
-        $search = $request->input('search');
-        $query = User::query();
+    public function getPesananData(Request $request)
+    {
+        try {
+            $search = $request->input('search');
+            $query = Pesanan::query();
 
-        if ($search) {
-            $query->where('name', 'LIKE', "%{$search}%")
-                  ->orWhere('email', 'LIKE', "%{$search}%")
-                  ->orWhere('alamat', 'LIKE', "%{$search}%");
+            if ($search) {
+                $query->where('name', 'LIKE', "%{$search}%")
+                    ->orWhere('email', 'LIKE', "%{$search}%")
+                    ->orWhere('alamat', 'LIKE', "%{$search}%");
+            }
+
+            $pesanans = $query->select('id', 'name', 'email', 'alamat')->get();
+            return response()->json($pesanans);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Gagal memuat data: ' . $e->getMessage()], 500);
         }
-
-        $users = $query->select('id', 'name', 'email', 'alamat')->get();
-        return response()->json($users); // Pastikan ini mengembalikan JSON lengkap
-    } catch (\Exception $e) {
-        return response()->json(['error' => 'Gagal memuat data: ' . $e->getMessage()], 500);
     }
-}
 
     /**
      * Store a newly created resource in storage.
