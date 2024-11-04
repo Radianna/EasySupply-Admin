@@ -3,103 +3,79 @@
 
 @section('content')
     <div class="card">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-3">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search..." name="search">
-                        <button type="submit" class="btn btn-primary">Search</button>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="float-end">
-                        <a href="{{ route('admin.manage-user.create') }}" class="btn btn-primary">Add User</a>
-                    </div>
-                </div>
-            </div>
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Daftar Pengguna</h5>
+            <a href="{{ route('admin.manage-user.create') }}" class="btn btn-primary">Tambah Pengguna</a>
         </div>
-        <div class="table-responsive">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Username</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Eugene</td>
-                        <td>Kopyov</td>
-                        <td>@Kopyov</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Victoria</td>
-                        <td>Baker</td>
-                        <td>@Vicky</td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>James</td>
-                        <td>Alexander</td>
-                        <td>@Alex</td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>Franklin</td>
-                        <td>Morrison</td>
-                        <td>@Frank</td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="card-body custom-card-action p-3">
+            <div class="table-responsive">
+                <table class="table table-striped" id="data-table">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nama</th>
+                            <th>Email</th>
+                            <th>Alamat</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
         </div>
     </div>
 @endsection
 
 @section('scripts')
     <script src="{{ asset('assets/js/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/js/vendor/tables/datatables/datatables.min.js') }}"></script>
     <script>
         $(document).ready(function() {
             loadDataTable();
-    
-            // Fungsi pencarian
-            $('input[name="search"]').on('keyup', function() {
-                loadDataTable($(this).val());
-            });
         });
-    
-        function loadDataTable(keyword = '') {
-            // Hancurkan instance DataTable sebelumnya jika ada
+
+        function loadDataTable() {
+            // Hancurkan instance DataTable jika sudah ada
             if ($.fn.DataTable.isDataTable('#data-table')) {
                 $('#data-table').DataTable().clear().destroy();
             }
-    
+
             $.ajax({
                 type: "GET",
                 url: "{{ route('admin.manage-user.data') }}",
-                data: { search: keyword },  // Kirim keyword untuk filter sisi server
                 dataType: "json",
                 success: function(data) {
-                    $('#data-table').DataTable({
-                        data: data,
-                        columns: [
-                            { data: 'id', title: 'ID' },
-                            { data: 'name', title: 'Nama' },
-                            { data: 'username', title: 'Username' },
-                            { data: 'email', title: 'Email' }
-                        ],
-                        pageLength: 10,  // Menetapkan jumlah data per halaman
-                        processing: true,  // Menampilkan indikator pemrosesan
-                        deferRender: true  // Meningkatkan rendering untuk data besar
-                    });
+                    // Memastikan bahwa 'data' adalah array
+                    if (Array.isArray(data)) {
+                        $('#data-table').DataTable({
+                            data: data,
+                            columns: [
+                                { data: 'id', title: 'ID' },
+                                { data: 'name', title: 'Nama' },
+                                { data: 'email', title: 'Email' },
+                                { data: 'alamat', title: 'Alamat' }
+                            ],
+                            pageLength: 10,
+                            processing: true,
+                            deferRender: true,
+                            dom: 'Bfrtip', // Atur elemen dom
+                            language: {
+                                search: "Cari:",
+                                lengthMenu: "Tampilkan _MENU_ entri per halaman",
+                                info: "Menampilkan _START_ hingga _END_ dari _TOTAL_ entri",
+                                paginate: {
+                                    previous: "Sebelumnya",
+                                    next: "Berikutnya"
+                                }
+                            }
+                        });
+                    } else {
+                        alert("Data tidak valid. Silakan coba lagi.");
+                    }
                 },
-                error: function() {
-                    alert('Gagal memuat data. Silakan coba lagi.');
+                error: function(xhr, status, error) {
+                    console.error("Error:", xhr.responseText);
+                    alert('Gagal memuat data. Silakan coba lagi. Kesalahan: ' + error);
                 }
             });
         }
     </script>
-    @endsection
+@endsection

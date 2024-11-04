@@ -25,6 +25,25 @@ class UserController extends Controller
         //
     }
 
+public function getUserData(Request $request)
+{
+    try {
+        $search = $request->input('search');
+        $query = User::query();
+
+        if ($search) {
+            $query->where('name', 'LIKE', "%{$search}%")
+                  ->orWhere('email', 'LIKE', "%{$search}%")
+                  ->orWhere('alamat', 'LIKE', "%{$search}%");
+        }
+
+        $users = $query->select('id', 'name', 'email', 'alamat')->get();
+        return response()->json($users); // Pastikan ini mengembalikan JSON lengkap
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Gagal memuat data: ' . $e->getMessage()], 500);
+    }
+}
+
     /**
      * Store a newly created resource in storage.
      */
