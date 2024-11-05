@@ -138,42 +138,6 @@
 									<i class="ph-caret-down collapsible-indicator ph-sm m-1"></i>
 								</a>
 							</div>
-
-							<div class="collapse d-lg-block ms-lg-auto" id="breadcrumb_elements">
-								<div class="d-lg-flex mb-2 mb-lg-0">
-									<a href="#" class="d-flex align-items-center text-body py-2">
-										<i class="ph-lifebuoy me-2"></i>
-										Support
-									</a>
-
-									<div class="dropdown ms-lg-3">
-										<a href="#" class="d-flex align-items-center text-body dropdown-toggle py-2" data-bs-toggle="dropdown">
-											<i class="ph-gear me-2"></i>
-											<span class="flex-1">Settings</span>
-										</a>
-
-										<div class="dropdown-menu dropdown-menu-end w-100 w-lg-auto">
-											<a href="#" class="dropdown-item">
-												<i class="ph-shield-warning me-2"></i>
-												Account security
-											</a>
-											<a href="#" class="dropdown-item">
-												<i class="ph-chart-bar me-2"></i>
-												Analytics
-											</a>
-											<a href="#" class="dropdown-item">
-												<i class="ph-lock-key me-2"></i>
-												Privacy
-											</a>
-											<div class="dropdown-divider"></div>
-											<a href="#" class="dropdown-item">
-												<i class="ph-gear me-2"></i>
-												All settings
-											</a>
-										</div>
-									</div>
-								</div>
-							</div>
 						</div>
 					</div>
 				</div>
@@ -478,63 +442,6 @@
 					</div>
 				</label>
 			</div>
-
-			<div class="fw-semibold mb-2">Direction</div>
-			<div class="list-group mb-3">
-				<label class="list-group-item list-group-item-action form-check border-width-1 rounded mb-0">
-					<div class="d-flex flex-fill my-1">
-						<div class="form-check-label d-flex me-2">
-							<i class="ph-translate ph-lg me-3"></i>
-							<div>
-								<span class="fw-bold">RTL direction</span>
-								<div class="text-muted">Toggle between LTR and RTL</div>
-							</div>
-						</div>
-						<input type="checkbox" name="layout-direction" value="rtl" class="form-check-input cursor-pointer m-0 ms-auto">
-					</div>
-				</label>
-			</div>
-
-			<div class="fw-semibold mb-2">Layouts</div>
-			<div class="row">
-				<div class="col-12">
-					<a href="index.html" class="d-block mb-3">
-						<img src="https://demo.interface.club/limitless/assets/images/layouts/layout_1.png" class="img-fluid img-thumbnail bg-primary bg-opacity-20 border-primary" alt="">
-					</a>
-				</div>
-				<div class="col-12">
-					<a href="../../layout_2/full/index.html" class="d-block mb-3">
-						<img src="https://demo.interface.club/limitless/assets/images/layouts/layout_2.png" class="img-fluid img-thumbnail" alt="">
-					</a>
-				</div>
-				<div class="col-12">
-					<a href="../../layout_3/full/index.html" class="d-block mb-3">
-						<img src="https://demo.interface.club/limitless/assets/images/layouts/layout_3.png" class="img-fluid img-thumbnail" alt="">
-					</a>
-				</div>
-				<div class="col-12">
-					<a href="../../layout_4/full/index.html" class="d-block mb-3">
-						<img src="https://demo.interface.club/limitless/assets/images/layouts/layout_4.png" class="img-fluid img-thumbnail" alt="">
-					</a>
-				</div>
-				<div class="col-12">
-					<a href="../../layout_5/full/index.html" class="d-block mb-3">
-						<img src="https://demo.interface.club/limitless/assets/images/layouts/layout_5.png" class="img-fluid img-thumbnail" alt="">
-					</a>
-				</div>
-				<div class="col-12">
-					<a href="../../layout_6/full/index.html" class="d-block">
-						<img src="https://demo.interface.club/limitless/assets/images/layouts/layout_6.png" class="img-fluid img-thumbnail" alt="">
-					</a>
-				</div>
-			</div>
-		</div>
-
-		<div class="border-top text-center py-2 px-3">
-			<a href="https://themeforest.net/item/limitless-responsive-web-application-kit/13080328?ref=kopyov" class="btn btn-yellow fw-semibold w-100 my-1" target="_blank">
-				<i class="ph-shopping-cart me-2"></i>
-				Purchase Limitless
-			</a>
 		</div>
 	</div>
 	<!-- /demo config -->

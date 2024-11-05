@@ -25,37 +25,46 @@ class UserController extends Controller
         return view('admin.manage-user.create');
     }
 
-public function getUserData(Request $request)
-{
-    try {
-        $search = $request->input('search');
-        $query = User::query();
+    public function getUserData(Request $request)
+    {
+        try {
+            $search = $request->input('search');
+            $query = User::with('roles');
 
-        if ($search) {
-            $query->where('name', 'LIKE', "%{$search}%")
-                  ->orWhere('email', 'LIKE', "%{$search}%")
-                  ->orWhere('alamat', 'LIKE', "%{$search}%");
+            if ($search) {
+                $query->where('name', 'LIKE', "%{$search}%")
+                    ->orWhere('email', 'LIKE', "%{$search}%")
+                    ->orWhere('alamat', 'LIKE', "%{$search}%");
+            }
+
+            $users = $query->select('id', 'name', 'email', 'alamat', 'role_id')->get();
+            return response()->json($users);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Gagal memuat data: ' . $e->getMessage()], 500);
         }
-
-        $users = $query->select('id', 'name', 'email', 'alamat')->get();
-        return response()->json($users); // Pastikan ini mengembalikan JSON lengkap
-    } catch (\Exception $e) {
-        return response()->json(['error' => 'Gagal memuat data: ' . $e->getMessage()], 500);
     }
-}
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
+        $password = bcrypt($request->password);
+        $tambah = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $password,
+            'alamat' => $request->alamat,
+            'kontak' => $request->kontak,
+            'role_id' => $request->role_id
+        ]);
+        return response()->json("Berhasil ditambahkan", 200);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(User $user)
     {
         //
     }
@@ -63,7 +72,7 @@ public function getUserData(Request $request)
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(User $user)
     {
         //
     }
@@ -71,16 +80,27 @@ public function getUserData(Request $request)
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, User $user)
     {
-        //
+        $password = bcrypt($request->password);
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $password,
+            'alamat' => $request->alamat,
+            'kontak' => $request->kontak,
+            'role_id' => $request->role_id
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(User $user)
     {
-        //
+        $user->delete();
+        return response()->json([
+            'pesan' => 'User berhasil dihapsus'
+        ]);
     }
 }
