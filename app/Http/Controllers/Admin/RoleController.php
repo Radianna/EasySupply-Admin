@@ -25,24 +25,31 @@ class RoleController extends Controller
         return view('admin.manage-role.create');
     }
 
-public function getRoleData(Request $request)
-{
-    try {
-        $search = $request->input('search');
-        $query = Role::query();
+    public function getRoleData(Request $request)
+    {
+        try {
+            $search = $request->input('search');
+            $query = Role::query();
 
-        if ($search) {
-            $query->where('name', 'LIKE', "%{$search}%")
-                  ->orWhere('email', 'LIKE', "%{$search}%")
-                  ->orWhere('alamat', 'LIKE', "%{$search}%");
+            if ($search) {
+                $query->where('name', 'LIKE', "%{$search}%");
+            }
+
+            $roles = $query->select('id', 'name')->get();
+
+            // Sesuaikan format data yang dikembalikan
+            $formattedRoles = $roles->map(function ($role) {
+                return [
+                    'id' => $role->id,
+                    'name' => $role->name
+                ];
+            });
+
+            return response()->json(['results' => $formattedRoles]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Gagal memuat data: ' . $e->getMessage()], 500);
         }
-
-        $roles = $query->select('id', 'name', 'email', 'alamat')->get();
-        return response()->json($roles); // Pastikan ini mengembalikan JSON lengkap
-    } catch (\Exception $e) {
-        return response()->json(['error' => 'Gagal memuat data: ' . $e->getMessage()], 500);
     }
-}
 
     /**
      * Store a newly created resource in storage.
