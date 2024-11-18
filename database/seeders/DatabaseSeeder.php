@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\MappingProduk;
 use App\Models\Role;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -17,8 +18,8 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         User::create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'Admin',
+            'email' => 'admin@gmail.com',
             'password' => bcrypt('password'),
             'role_id' => 1,
         ]);
@@ -27,5 +28,10 @@ class DatabaseSeeder extends Seeder
             'id' => 1,
             'name' => 'Admin',
         ]);
+
+        // eksekusi seeder lain
+        $this->call(ProdukSeeder::class);
+        $this->call(UnitSeeder::class);
+        $this->call(MappingProdukSeeder::class);
     }
 }

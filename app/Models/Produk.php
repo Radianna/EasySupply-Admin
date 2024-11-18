@@ -8,4 +8,9 @@ class Produk extends Model
 {
     protected $table = 'produks';
     protected $guarded = [];
+
+    public function mappingProducts()
+    {
+        return $this->hasMany(MappingProduk::class, 'produk_id');
+    }
 }

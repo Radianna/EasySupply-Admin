@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\PesananController;
 use App\Http\Controllers\Api\ProdukController;
 use App\Http\Controllers\Api\RoleController;
+use App\Http\Controllers\Api\TokoController;
 use App\Http\Controllers\Api\UserController;
 use App\Models\Produk;
 use Illuminate\Http\Request;
@@ -26,3 +27,5 @@ Route::resource('user' ,UserController::class);
 Route::resource('role' ,RoleController::class);
 Route::resource('produk' ,ProdukController::class);
 Route::resource('pesanan' ,PesananController::class);
+
+Route::get('/get-list-produk', [TokoController::class, 'getListProduk']);
