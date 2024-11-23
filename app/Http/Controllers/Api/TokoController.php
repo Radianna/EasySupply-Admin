@@ -47,7 +47,7 @@ class TokoController extends Controller
             return ['error' => $e->getMessage()];
         }
     }
-    
+
     public function getListProduk()
     {
         // Mengambil data dari model `Produk` beserta relasi `mappingProducts` dan `unit`
@@ -95,5 +95,23 @@ class TokoController extends Controller
 
         // Mengembalikan response dalam bentuk JSON
         return response()->json($produkData);
+    }
+
+    public function checkout(Request $request)
+    {
+        // Mendapatkan data pesanan dari request
+        $pesanan = $request->pesanan;
+        $detailPesanan = $request->detail_pesanan;
+
+        // Simpan data pesanan dan detail pesanan ke database
+        $pesanan = DetailPesanan::create($pesanan);
+        foreach ($detailPesanan as $detail) {
+            DetailPesanan::create($detail);
+        }
+
+        // Mengembalikan response dalam bentuk JSON
+        return response()->json([
+            'pesan' => 'Pesanan berhasil dikirim',
+        ]);
     }
 }

@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('detail_pesanans', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('pesanan_id');
-            $table->unsignedBigInteger('produk_id');
+            $table->unsignedBigInteger('mapping_produk_id');
             $table->integer('jumlah');
             $table->integer('harga_satuan');
             $table->integer('subtotal');

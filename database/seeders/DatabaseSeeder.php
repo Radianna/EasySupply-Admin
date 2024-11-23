@@ -24,9 +24,21 @@ class DatabaseSeeder extends Seeder
             'role_id' => 1,
         ]);
 
+        User::create([
+            'name' => 'Toko1',
+            'email' => 'toko1@gmail.com',
+            'password' => bcrypt('password'),
+            'role_id' => 2,
+        ]);
+
         Role::create([
             'id' => 1,
             'name' => 'Admin',
+        ]);
+
+        Role::create([
+            'id' => 2,
+            'name' => 'Toko',
         ]);
 
         // eksekusi seeder lain

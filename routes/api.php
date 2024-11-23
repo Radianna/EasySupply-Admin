@@ -1,10 +1,7 @@
 <?php
 
-use App\Http\Controllers\Api\PesananController;
-use App\Http\Controllers\Api\ProdukController;
-use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\TokoController;
-use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\AuthController;
 use App\Models\Produk;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -23,12 +20,14 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::resource('user' ,UserController::class);
-Route::resource('role' ,RoleController::class);
-Route::resource('produk' ,ProdukController::class);
-Route::resource('pesanan' ,PesananController::class);
+// routes/api.php
+Route::post('/login', [AuthController::class, 'login']);
+
 
 Route::get('/get-list-produk', [TokoController::class, 'getListProduk']);
 Route::get('/get-data-produk/{id}', [TokoController::class, 'getDataProduk']);
 
 Route::get('/get-image-produk/{filePath}', [TokoController::class, 'getImageProduk']);
+//checkout
+
+Route::post('/checkout', [TokoController::class, 'checkout']);
