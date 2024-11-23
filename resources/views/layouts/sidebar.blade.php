@@ -45,7 +45,7 @@
                     <ul class="nav-group-sub collapse">
                         <li class="nav-item"><a href="{{ route('admin.manage-user.index') }}" class="nav-link">User</a></li>
                         <li class="nav-item"><a href="../../layout_3/full/index.html" class="nav-link">Role</a></li>
-                        <li class="nav-item"><a href="../../layout_4/full/index.html" class="nav-link">Produk</a></li>
+                        <li class="nav-item"><a href="{{ route('admin.manage-produk.index') }}" class="nav-link">Produk</a></li>
                         <li class="nav-item"><a href="../../layout_5/full/index.html" class="nav-link">Pesanan</a></li>
                     </ul>
                 </li>

@@ -63,7 +63,6 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
         // Validasi data yang dikirim
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',

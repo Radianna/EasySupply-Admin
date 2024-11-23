@@ -29,3 +29,6 @@ Route::resource('produk' ,ProdukController::class);
 Route::resource('pesanan' ,PesananController::class);
 
 Route::get('/get-list-produk', [TokoController::class, 'getListProduk']);
+Route::get('/get-data-produk/{id}', [TokoController::class, 'getDataProduk']);
+
+Route::get('/get-image-produk/{filePath}', [TokoController::class, 'getImageProduk']);
