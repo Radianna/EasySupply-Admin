@@ -23,11 +23,12 @@ use Illuminate\Support\Facades\Route;
 // routes/api.php
 Route::post('/login', [AuthController::class, 'login']);
 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/get-list-produk', [TokoController::class, 'getListProduk']);
+    Route::get('/get-data-produk/{id}', [TokoController::class, 'getDataProduk']);
 
-Route::get('/get-list-produk', [TokoController::class, 'getListProduk']);
-Route::get('/get-data-produk/{id}', [TokoController::class, 'getDataProduk']);
+    Route::post('/get-batch-image-produk', [TokoController::class, 'getBatchImageProduk']);
+    //checkout
 
-Route::get('/get-image-produk/{filePath}', [TokoController::class, 'getImageProduk']);
-//checkout
-
-Route::post('/checkout', [TokoController::class, 'checkout']);
+    Route::post('/checkout', [TokoController::class, 'checkout']);
+});

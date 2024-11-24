@@ -8,43 +8,81 @@ use App\Models\MappingProduk;
 use App\Models\Produk;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
+use GuzzleHttp\Promise;
+use GuzzleHttp\Promise\Utils;
 
 class TokoController extends Controller
 {
-
-    public function getImageProduk($filePath)
+    public function getBatchImageProduk(Request $request)
     {
-        $client = new Client(); // Inisialisasi Guzzle Client
-        $apiUrl = env('API_URL'); // Mendapatkan URL API dari environment
-        $path = public_path('storage/produk/' . $filePath);
-    
-        // Validasi apakah file ada
-        if (!file_exists($path)) {
-            return ['error' => 'File not found'];
+        $filePaths = $request->input('file_paths');
+
+        // Validasi input
+        if (empty($filePaths) || !is_array($filePaths)) {
+            return response()->json(['error' => 'Invalid or missing file paths'], 400);
         }
-    
+
+        $client = new Client();
+        $apiUrl = env('API_URL');
+        $responses = [];
+
+        // Proses setiap file path menggunakan Guzzle
+        foreach ($filePaths as $filePath) {
+            try {
+                $absolutePath = public_path('storage/produk/' . $filePath);
+
+                // Pastikan file gambar ada sebelum mengirimkan request
+                if (!file_exists($absolutePath)) {
+                    $responses[] = [
+                        'filename' => $filePath,
+                        'error' => 'File not found'
+                    ];
+                    continue;
+                }
+
+                $responses[] = $client->postAsync($apiUrl . '/api/upload-image', [
+                    'multipart' => [
+                        [
+                            'name'     => 'image',
+                            'contents' => fopen($absolutePath, 'r'),
+                            'filename' => basename($filePath),
+                        ],
+                        [
+                            'name'     => 'image_name',
+                            'contents' => basename($filePath),
+                        ],
+                    ],
+                ]);
+            } catch (\Exception $e) {
+                $responses[] = [
+                    'filename' => $filePath,
+                    'error' => $e->getMessage(),
+                ];
+            }
+        }
+
         try {
-            // Kirim file ke API proyek B
-            $response = $client->post($apiUrl . '/api/upload-image', [
-                'multipart' => [
-                    [
-                        'name'     => 'image', // Nama field untuk file
-                        'contents' => fopen($path, 'r'), // Membuka file untuk dikirim
-                        'filename' => basename($path), // Nama file asli
-                    ],
-                    [
-                        'name'     => 'image_name', // Nama field untuk nama file yang akan disimpan
-                        'contents' => basename($path), // Menggunakan nama file asli
-                    ],
-                ],
-            ]);
-    
-            // Decode response API
-            $result = json_decode($response->getBody(), true);
-            return $result; // Return hasil response
+            // Menunggu semua permintaan selesai
+            $results = Utils::settle($responses)->wait();
+
+            $imageData = array_map(function ($result) {
+                if ($result['state'] === 'fulfilled') {
+                    $data = json_decode($result['value']->getBody(), true);
+                    return [
+                        'filename' => basename($data['path']),
+                        'path' => $data['path'],
+                        'message' => $data['message'],
+                    ];
+                } else {
+                    return [
+                        'error' => $result['reason']->getMessage(),
+                    ];
+                }
+            }, $results);
+
+            return response()->json($imageData, 200);
         } catch (\Exception $e) {
-            // Tangani error
-            return ['error' => $e->getMessage()];
+            return response()->json(['error' => 'Batch processing failed: ' . $e->getMessage()], 500);
         }
     }
 

@@ -21,23 +21,20 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 
-Route::prefix('admin')->name('admin.')->group(function () {
-    //user
-    Route::get('manage-user/data', [UserController::class, 'getUserData'])->name('manage-user.data');
-    Route::resource('manage-user', UserController::class);
-    //role
-    Route::get('manage-role/data', [RoleController::class, 'getRoleData'])->name('manage-role.data');
-    Route::resource('manage-role', RoleController::class);
-    //produk
-    Route::get('manage-produk/data', [ProdukController::class, 'getProdukData'])->name('manage-produk.data');
-    Route::resource('manage-produk', ProdukController::class);
-    //pesanan
-    Route::get('manage-pesanan/data', [PesananController::class, 'getPesananData'])->name('manage-pesanan.data');
-    Route::resource('manage-pesanan', PesananController::class);
-
+    Route::prefix('admin')->name('admin.')->group(function () {
+        //user
+        Route::get('manage-user/data', [UserController::class, 'getUserData'])->name('manage-user.data');
+        Route::resource('manage-user', UserController::class);
+        //role
+        Route::get('manage-role/data', [RoleController::class, 'getRoleData'])->name('manage-role.data');
+        Route::resource('manage-role', RoleController::class);
+        //produk
+        Route::get('manage-produk/data', [ProdukController::class, 'getProdukData'])->name('manage-produk.data');
+        Route::resource('manage-produk', ProdukController::class);
+        //pesanan
+        Route::get('manage-pesanan/data', [PesananController::class, 'getPesananData'])->name('manage-pesanan.data');
+        Route::resource('manage-pesanan', PesananController::class);
+    });
 });
 
-
-});
-
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

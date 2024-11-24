@@ -13,6 +13,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('reverence');
             $table->date('tanggal_pesanan');
+            $table->integer('total_item');
             $table->integer('total_harga');
             $table->enum('status_pesanan', ['menunggu konfirmasi', 'ditolak', 'diproses', 'dikirim', 'selesai']);
             $table->timestamps();
