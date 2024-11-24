@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\DetailPesanan;
 use App\Models\MappingProduk;
+use App\Models\Pesanan;
 use App\Models\Produk;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
@@ -137,19 +138,51 @@ class TokoController extends Controller
 
     public function checkout(Request $request)
     {
-        // Mendapatkan data pesanan dari request
-        $pesanan = $request->pesanan;
-        $detailPesanan = $request->detail_pesanan;
+        try {
+            return $this->atomic(function () use ($request) {
+                // Validasi data request
+                $validated = $request->validate([
+                    'user_id' => 'required|exists:users,id',
+                    'totalPesanan' => 'required|integer|min:1',
+                    'totalHarga' => 'required|numeric|min:0',
+                    'detail_pesanan.*.id' => 'required|exists:mapping_produks,id',
+                    'detail_pesanan.*.quantity' => 'required|integer|min:1',
+                    'detail_pesanan.*.harga' => 'required|numeric|min:0',
+                ]);
 
-        // Simpan data pesanan dan detail pesanan ke database
-        $pesanan = DetailPesanan::create($pesanan);
-        foreach ($detailPesanan as $detail) {
-            DetailPesanan::create($detail);
+                // Generate referensi pesanan
+                $ref = 'ESP-' . date('Ymd') . mt_rand(100, 999);
+
+                // Simpan data pesanan ke tabel Pesanan
+                $pesanan = Pesanan::create([
+                    'ref' => $ref,
+                    'user_id' => $validated['user_id'],
+                    'total_item' => $validated['totalPesanan'],
+                    'total_harga' => $validated['totalHarga'],
+                    'tanggal_pesanan' => now(),
+                    'status_pesanan' => 'menunggu konfirmasi',
+                ]);
+
+                // Simpan detail pesanan
+                foreach ($validated['detail_pesanan'] as $detail) {
+                    $pesanan->detail_pesanan()->create([
+                        'mapping_produk_id' => $detail['id'],
+                        'jumlah' => (int)$detail['quantity'],
+                        'harga_satuan' => $detail['harga'],
+                        'subtotal' => (int)$detail['quantity'] * $detail['harga'],
+                    ]);
+                }
+
+                // Kembalikan respons JSON
+                return response()->json([
+                    'status' => 'success',
+                ]);
+            });
+        } catch (\Throwable $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Terjadi kesalahan saat menyimpan pesanan.',
+            ], 500);
         }
-
-        // Mengembalikan response dalam bentuk JSON
-        return response()->json([
-            'pesan' => 'Pesanan berhasil dikirim',
-        ]);
     }
 }

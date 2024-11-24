@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('pesanans', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('reverence');
+            $table->string('ref');
             $table->date('tanggal_pesanan');
             $table->integer('total_item');
             $table->integer('total_harga');
